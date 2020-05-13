@@ -1,0 +1,71 @@
+body, html {
+    font-size: 20px;
+    font-family: 'Sen', sans-serif;
+    background: rgb(220, 240, 252);
+    color: rgb(0, 0, 0);
+}
+
+label {
+    display: inline-block;
+    width: 6em; 
+    text-align: right;
+}
+
+button {
+    display: inline-block;
+    margin-left: 15em;
+}
+
+.book-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding-left: 1em;
+    border: 1px solid red;
+    width: 25%;
+    height: 15em;
+}
+
+.book-list {
+    display: flex;
+    flex-direction: column;
+    /*flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    border: 1px solid blue;
+    width: 100%
+}
+
+.book-card { 
+    flex-basis: 1 0 auto;
+    border: 1px solid black;
+    height: 10em;
+    width: 25%;
+}
+
+.form-entry {
+    flex-basis: 1 0 auto;
+    margin-top: 5px;
+}
+
+.radio {
+    padding-left: 1em;
+}
+
+#submit-btn {
+    background-color: #4683ea;
+    border: 1px solid #4683ea;
+    border-radius: 2px;
+    font-weight: bold;
+    color: #FFF;
+    opacity: 1;
+
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
