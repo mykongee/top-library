@@ -39,9 +39,25 @@ button {
 }
 
 .book-card { 
+    display: flex;
+    flex-direction: row;
     flex-basis: 1 0 auto;
     border: 1px solid black;
+    border-radius: 1em;
     height: 10em;
+    width: 33%;
+    margin: 0.2em;
+}
+
+.book-card .book-info {
+    width: 75%;
+}
+
+.book-card .book-info > h3 {
+    font-size: 20px;
+}
+
+.book-card .buttons {
     width: 25%;
 }
 

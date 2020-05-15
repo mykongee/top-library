@@ -3,6 +3,7 @@ let myLibrary = [];
 let submitBtn = document.querySelector("#submit-btn");
 submitBtn.addEventListener("click", addBook);
 
+let bookList = document.querySelector(".book-list");
 
 /*TODO:
 write render() function to create cards based on myLibrary 
@@ -39,13 +40,43 @@ function addBook(){
 
 function render() {
     for (let i = 0; i < myLibrary.length; i++) {
+        let bookCard = document.createElement("div");
+        bookCard.setAttribute("class", "book-card");
+        let bookInfo = document.createElement("div");
+        bookInfo.setAttribute("class", "book-info");
+        
+        let bookTitle = document.createElement("h3");
+        bookTitle.setAttribute("class", "book-title");
+        bookTitle.textContent = myLibrary[i].title;
 
+        let bookAuthor = document.createElement("h3");
+        bookAuthor.setAttribute("class", "book-author");
+        bookAuthor.textContent = myLibrary[i].author;
+
+        let bookPages = document.createElement("h3");
+        bookPages.setAttribute("class", "book-pages");
+        bookPages.textContent = myLibrary[i].pages;
+
+        let bookReadStatus = document.createElement("h3");
+        bookReadStatus = document.createElement("class", "book-read-status");
+        myLibrary[i].haveRead ? bookReadStatus.textContent = "Have read" : bookReadStatus.textContent = "Have not read";
+
+        console.log(bookCard);
+        bookInfo.appendChild(bookTitle);
+        bookInfo.appendChild(bookAuthor);
+        bookInfo.appendChild(bookPages);
+        bookInfo.appendChild(bookReadStatus);
+
+        bookCard.appendChild(bookInfo);
+
+        bookList.appendChild(bookCard);
     }
     return false;
 }
 
 let harryPotter = new Book("Harry Potter", "J.K. Rowling", "203", true);
 myLibrary.push(harryPotter);
+render();
 console.log(harryPotter.info());
 console.log(harryPotter.toggleRead());
 console.log(harryPotter.info());
