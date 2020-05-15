@@ -13,14 +13,15 @@ function Book(title, author, pages, haveRead) {
     this.author = author;
     this.pages = pages;
     this.haveRead = haveRead;
-    
-    this.info = function() {
-        return `${title} by ${author}, ${pages}, ${haveRead ? "have read" : "not read yet"}`;
-    }
 
-    this.toggleRead = function() {
-        this.haveRead = !this.haveRead;
-    }
+}
+
+Book.prototype.info = function() {
+    return `${this.title} by ${this.author}, ${this.pages}, ${this.haveRead ? "have read" : "have not read"}.`;
+}
+
+Book.prototype.toggleRead = function() {
+    this.haveRead = !this.haveRead;
 }
 
 function addBook(){
@@ -30,11 +31,10 @@ function addBook(){
         document.querySelector("#pages").value,
         document.querySelector(`input[name="read"]:checked`).value === "read" ? true : false         
     );
+
     myLibrary.push(newBook);
     console.log(myLibrary);
-
-
-    return false;
+    
 }
 
 function render() {
@@ -43,3 +43,9 @@ function render() {
     }
     return false;
 }
+
+let harryPotter = new Book("Harry Potter", "J.K. Rowling", "203", true);
+myLibrary.push(harryPotter);
+console.log(harryPotter.info());
+console.log(harryPotter.toggleRead());
+console.log(harryPotter.info());
