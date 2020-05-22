@@ -6,7 +6,11 @@ submitBtn.addEventListener("click", addBook);
 let bookList = document.querySelector(".book-list");
 
 /*TODO:
-write render() function to create cards based on myLibrary 
+implement createCard() helper 
+add delete and read toggle functions to book card display
+add book controls section to render()
+test render() on multiple books
+polish UI
 
 */
 function Book(title, author, pages, haveRead) {
@@ -38,12 +42,23 @@ function addBook(){
     
 }
 
+function deleteBook(event) {
+    // book.dataset["indexNumber"];
+    myLibrary.splice(this.dataset)
+}
+
+function createCard(book) {
+
+}
+
 function render() {
     for (let i = 0; i < myLibrary.length; i++) {
         let bookCard = document.createElement("div");
         bookCard.setAttribute("class", "book-card");
         let bookInfo = document.createElement("div");
         bookInfo.setAttribute("class", "book-info");
+
+        bookCard.setAttribute("data-index-number", i);
         
         let bookTitle = document.createElement("h3");
         bookTitle.setAttribute("class", "book-title");
@@ -76,6 +91,9 @@ function render() {
 
 let harryPotter = new Book("Harry Potter", "J.K. Rowling", "203", true);
 myLibrary.push(harryPotter);
+
+let twilight = new Book("Twilight", "Stephanie", 105, false);
+myLibrary.push(twilight);
 render();
 console.log(harryPotter.info());
 console.log(harryPotter.toggleRead());
