@@ -1,15 +1,12 @@
 let myLibrary = [];
 
-let submitBtn = document.querySelector("#submit-btn");
-submitBtn.addEventListener("click", addBook);
+let addBookBtn = document.querySelector("#submit-btn");
+addBookBtn.addEventListener("click", addBook);
 
 let bookList = document.querySelector(".book-list");
 
 /*TODO:
-implement createCard() helper 
 add delete and read toggle functions to book card display
-add book controls section to render()
-test render() on multiple books
 polish UI
 
 */
@@ -30,64 +27,115 @@ Book.prototype.toggleRead = function() {
 }
 
 function addBook(){
+    let titleInput = document.querySelector("#title");
+    let authorInput = document.querySelector("#author");
+    let pagesInput = document.querySelector("#pages");
+    let readInput = document.querySelector("#radio-btns");
+    let inputs = [titleInput, authorInput, pagesInput, readInput];
+    
+    for (let i = 0; i < inputs.length; i++) {
+        if (!validateInput(inputs[i])) {
+            alert("Please fill all fields");
+            return // one or more inputs are invalid
+        }
+    }
+
     let newBook = new Book(
-        document.querySelector("#title").value,
-        document.querySelector("#author").value,
-        document.querySelector("#pages").value,
+        titleInput.value,
+        authorInput.value,
+        pagesInput.value,
         document.querySelector(`input[name="read"]:checked`).value === "read" ? true : false         
     );
 
     myLibrary.push(newBook);
     console.log(myLibrary);
-    
+    render();
+}
+
+function validateInput(input) {
+    if (input.getAttribute("type") === "text" || input.getAttribute("type") === "number" ){
+        return input.value.trim() != "" ? true : false;
+
+    } else { 
+        input = [...input.children]; // get radio button values in an iterable list
+        let validRadio = false;
+        for (let i = 0; i < input.length; i++) {
+            if (input[i].firstElementChild.checked) {
+                validRadio = true;
+            }
+        }
+        return validRadio;
+    }
+
 }
 
 function deleteBook(event) {
     // book.dataset["indexNumber"];
-    myLibrary.splice(this.dataset)
+    let card = event.target.parentNode.parentNode;
+    card.parentNode.removeChild(card);
 }
 
 function createCard(book) {
+    let bookCard = document.createElement("div");
+    bookCard.setAttribute("class", "book-card");
+    let bookInfo = document.createElement("div");
+    bookInfo.setAttribute("class", "book-info");
+    
+    let bookTitle = document.createElement("h3");
+    bookTitle.setAttribute("class", "book-title");
+    bookTitle.textContent = book.title;
 
+    let bookAuthor = document.createElement("h3");
+    bookAuthor.setAttribute("class", "book-author");
+    bookAuthor.textContent = book.author;
+
+    let bookPages = document.createElement("h3");
+    bookPages.setAttribute("class", "book-pages");
+    bookPages.textContent = book.pages;
+
+    let bookReadStatus = document.createElement("h3");
+    bookReadStatus = document.createElement("class", "book-read-status");
+    book.haveRead ? bookReadStatus.textContent = "Have read" : bookReadStatus.textContent = "Have not read";
+
+    let bookControls = document.createElement("div");
+    bookControls.setAttribute("class", "book-controls");
+
+    let deleteBtn = document.createElement("input");
+    deleteBtn.setAttribute("type", "button");    
+    deleteBtn.setAttribute("class", "btn-delete");
+    deleteBtn.value = "delete";
+    deleteBtn.addEventListener("click", deleteBook);
+
+    let toggleBtn = document.createElement("input");
+    toggleBtn.setAttribute("type", "button");
+    toggleBtn.setAttribute("class", "btn-toggle");
+    toggleBtn.value = "read/unread";
+
+    bookControls.appendChild(deleteBtn);
+    bookControls.appendChild(toggleBtn);
+
+    bookInfo.appendChild(bookTitle);
+    bookInfo.appendChild(bookAuthor);
+    bookInfo.appendChild(bookPages);
+    bookInfo.appendChild(bookReadStatus);
+
+    bookCard.appendChild(bookInfo);
+    bookCard.appendChild(bookControls);
+
+    return bookCard;
 }
 
 function render() {
+    document.querySelector(".book-list").innerHTML = ""; // clear HTML elements before re-rendering (not efficient, but works on smaller scale)
+
     for (let i = 0; i < myLibrary.length; i++) {
-        let bookCard = document.createElement("div");
-        bookCard.setAttribute("class", "book-card");
-        let bookInfo = document.createElement("div");
-        bookInfo.setAttribute("class", "book-info");
-
+        let bookCard = createCard(myLibrary[i]);
         bookCard.setAttribute("data-index-number", i);
-        
-        let bookTitle = document.createElement("h3");
-        bookTitle.setAttribute("class", "book-title");
-        bookTitle.textContent = myLibrary[i].title;
-
-        let bookAuthor = document.createElement("h3");
-        bookAuthor.setAttribute("class", "book-author");
-        bookAuthor.textContent = myLibrary[i].author;
-
-        let bookPages = document.createElement("h3");
-        bookPages.setAttribute("class", "book-pages");
-        bookPages.textContent = myLibrary[i].pages;
-
-        let bookReadStatus = document.createElement("h3");
-        bookReadStatus = document.createElement("class", "book-read-status");
-        myLibrary[i].haveRead ? bookReadStatus.textContent = "Have read" : bookReadStatus.textContent = "Have not read";
-
-        console.log(bookCard);
-        bookInfo.appendChild(bookTitle);
-        bookInfo.appendChild(bookAuthor);
-        bookInfo.appendChild(bookPages);
-        bookInfo.appendChild(bookReadStatus);
-
-        bookCard.appendChild(bookInfo);
-
         bookList.appendChild(bookCard);
     }
     return false;
 }
+
 
 let harryPotter = new Book("Harry Potter", "J.K. Rowling", "203", true);
 myLibrary.push(harryPotter);
