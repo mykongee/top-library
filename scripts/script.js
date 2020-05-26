@@ -22,9 +22,11 @@ Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages}, ${this.haveRead ? "have read" : "have not read"}.`;
 }
 
+
 Book.prototype.toggleRead = function() {
     this.haveRead = !this.haveRead;
 }
+
 
 function addBook(){
     let titleInput = document.querySelector("#title");
@@ -70,9 +72,20 @@ function validateInput(input) {
 }
 
 function deleteBook(event) {
-    // book.dataset["indexNumber"];
     let card = event.target.parentNode.parentNode;
     card.parentNode.removeChild(card);
+    myLibrary.splice(card.dataset["indexNumber"] , 1);
+    render();
+}
+
+
+function toggleHandler(event) {
+    // change Book read/unread property 
+    // change card display 
+    let card = event.target.parentNode.parentNode;
+    let book = myLibrary[card.dataset["indexNumber"]];
+    book.toggleRead();
+    card.querySelector(".book-read-status").textContent = book.haveRead ? "Have Read" : "Have Not Read";
 }
 
 function createCard(book) {
@@ -94,8 +107,8 @@ function createCard(book) {
     bookPages.textContent = book.pages;
 
     let bookReadStatus = document.createElement("h3");
-    bookReadStatus = document.createElement("class", "book-read-status");
-    book.haveRead ? bookReadStatus.textContent = "Have read" : bookReadStatus.textContent = "Have not read";
+    bookReadStatus.setAttribute("class", "book-read-status");
+    book.haveRead ? bookReadStatus.textContent = "Have Read" : bookReadStatus.textContent = "Have Not read";
 
     let bookControls = document.createElement("div");
     bookControls.setAttribute("class", "book-controls");
@@ -110,6 +123,7 @@ function createCard(book) {
     toggleBtn.setAttribute("type", "button");
     toggleBtn.setAttribute("class", "btn-toggle");
     toggleBtn.value = "read/unread";
+    toggleBtn.addEventListener("click", toggleHandler);
 
     bookControls.appendChild(deleteBtn);
     bookControls.appendChild(toggleBtn);
